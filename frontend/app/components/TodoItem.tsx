@@ -1,35 +1,39 @@
-import React from "react";
-import Link from "next/link";
-import { Todo } from "@/types/todo";
+"use client";
 
-export type { Todo };
+interface Todo {
+    id: string;
+    text: string;
+    completed: boolean;
+}
 
-export default function TodoItem({ todo }: { todo: Todo }) {
+interface TodoItemProps {
+    todo: Todo;
+    onToggle: (id: string) => void;
+    onDelete: (id: string) => void;
+}
+
+export default function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
     return (
-        <li
-            className={`p-4 rounded-md border flex items-center justify-between gap-3 transition-colors ${
-                todo.completed
-                    ? "bg-green-50 border-green-200"
-                    : "bg-gray-50 border-gray-200"
-            }`}>
+        <div className="flex items-center justify-between p-3 mb-2 bg-white border rounded-lg shadow-sm">
             <div className="flex items-center gap-3">
                 <input
                     type="checkbox"
                     checked={todo.completed}
-                    className="w-5 h-5 rounded text-blue-600"
-                    readOnly
+                    onChange={() => onToggle(todo.id)}
+                    className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
                 />
                 <span
-                    className={`text-lg ${todo.completed ? "line-through text-gray-400" : "text-gray-800"}`}>
-                    {todo.title}
+                    className={`text-gray-800 ${
+                        todo.completed ? "line-through text-gray-400" : ""
+                    }`}>
+                    {todo.text}
                 </span>
             </div>
-
-            <Link
-                href={`/task/${todo.id}`}
-                className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline shrink-0">
-                Detail
-            </Link>
-        </li>
+            <button
+                onClick={() => onDelete(todo.id)}
+                className="text-red-500 hover:text-red-700 text-sm font-medium">
+                Hapus
+            </button>
+        </div>
     );
 }

@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:5000/api/sembarang
+method: GET
+order: 1789795504497
